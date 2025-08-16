@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Employee App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Employee App Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Fetch Employees</h3>
+        <button onclick="testFetchEmployees()">Test Fetch Employees</button>
+        <div id="fetchResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Add Employee (Test Data)</h3>
+        <button onclick="testAddEmployee()">Test Add Employee</button>
+        <div id="addResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Update Employee</h3>
+        <button onclick="testUpdateEmployee()">Test Update Employee</button>
+        <div id="updateResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 4: Delete Employee</h3>
+        <button onclick="testDeleteEmployee()">Test Delete Employee</button>
+        <div id="deleteResult"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '../php/';
+        
+        async function testFetchEmployees() {
+            const resultDiv = document.getElementById('fetchResult');
+            try {
+                const response = await fetch(API_BASE_URL + 'fetch_employees.php');
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success">✅ Success! Found ${data.length} employees</div><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testAddEmployee() {
+            const resultDiv = document.getElementById('addResult');
+            const testEmployee = {
+                Nomor_Pegawai: "TEST" + Date.now(),
+                nama: "Test Employee",
+                alamat: "Test Address",
+                kota: "Test City",
+                telepon: "123456789",
+                Jenis_Kelamin: "Male",
+                Tempat_Lahir: "Test Place",
+                Tanggal_Lahir: "1990-01-01",
+                Golongan_Darah: "O",
+                Agama: "Islam",
+                Pendidikan: "S1",
+                Status_Perkawinan: "Single",
+                No_KTP: "1234567890123456",
+                NPWP: "123456789012345",
+                Tgl_Masuk: "2024-01-01",
+                Tgl_Keluar: "",
+                DEPARTMENT: "ENGINEERING DEPARTMENT",
+                Jabatan: "Developer"
+            };
+            
+            try {
+                const response = await fetch(API_BASE_URL + 'add_employee.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testEmployee)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    resultDiv.innerHTML = `<div class="success">✅ Success: ${result.message}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Error: ${result.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testUpdateEmployee() {
+            const resultDiv = document.getElementById('updateResult');
+            // First get employees to find one to update
+            try {
+                const response = await fetch(API_BASE_URL + 'fetch_employees.php');
+                const employees = await response.json();
+                if (employees.length > 0) {
+                    const employee = employees[0];
+                    const updateData = {
+                        id: employee.id,
+                        Nomor_Pegawai: employee.Nomor_Pegawai,
+                        nama: employee.nama + " (Updated)",
+                        alamat: employee.alamat,
+                        kota: employee.kota,
+                        telepon: employee.telepon,
+                        Jenis_Kelamin: employee.Jenis_Kelamin,
+                        Tempat_Lahir: employee.Tempat_Lahir,
+                        Tanggal_Lahir: employee.Tanggal_Lahir,
+                        Golongan_Darah: employee.Golongan_Darah,
+                        Agama: employee.Agama,
+                        Pendidikan: employee.Pendidikan,
+                        Status_Perkawinan: employee.Status_Perkawinan,
+                        No_KTP: employee.No_KTP,
+                        NPWP: employee.NPWP,
+                        Tgl_Masuk: employee.Tgl_Masuk,
+                        Tgl_Keluar: employee.Tgl_Keluar,
+                        DEPARTMENT: employee.DEPARTMENT,
+                        Jabatan: employee.Jabatan
+                    };
+                    
+                    const updateResponse = await fetch(API_BASE_URL + 'update_employee.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateData)
+                    });
+                    const result = await updateResponse.json();
+                    if (result.success) {
+                        resultDiv.innerHTML = `<div class="success">✅ Success: ${result.message}</div>`;
+                    } else {
+                        resultDiv.innerHTML = `<div class="error">❌ Error: ${result.message}</div>`;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ No employees found to update</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testDeleteEmployee() {
+            const resultDiv = document.getElementById('deleteResult');
+            resultDiv.innerHTML = `<div class="error">⚠️ Warning: This will delete an employee. Use with caution!</div>`;
+        }
+    </script>
+</body>
+</html>

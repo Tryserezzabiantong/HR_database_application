@@ -1,0 +1,78 @@
+# Employee Management System - .gitignore
+
+# Logs
+src/logs/
+logs/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Database files
+*.sql
+src/database/*.sql
+!src/database/database_structure.sql
+
+# Configuration files (if sensitive)
+src/config/config.php
+!src/config/config.example.php
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Composer
+vendor/
+composer.lock
+
+# Build files
+dist/
+build/
+*.min.js
+*.min.css
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Cache files
+cache/
+*.cache
+
+# Session files
+sessions/
+*.sess
+
+# Upload files
+uploads/
+temp/
+
+# XAMPP specific
+xampp/
+htdocs/

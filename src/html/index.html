@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Background Colour */
+            background: linear-gradient(135deg, #0a4d01 0%, #1ff103 100%); 
+        }
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .company-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .company-tagline {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Main Application Container -->
+    <div id="appContainer" class="main-container">
+        <!-- Login Form Section -->
+        <div id="loginSection" class="login-container">
+            <!-- Logo and Company Branding -->
+            <div class="logo-container">
+                <div class="logo">HR</div>
+                <h1 class="company-name">HR Management</h1>
+                <p class="company-tagline">Employee Management System</p>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Form Login</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-gray-700 font-medium mb-1">Username</label>
+                    <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter username">
+                </div>
+                <div>
+                    <label for="password" class="block text-gray-700 font-medium mb-1">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter password">
+                </div>
+                <div id="loginMessage" class="text-sm text-red-500 hidden"></div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-transform duration-200 active:scale-95">
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <!-- Main Dashboard Section (Hidden by default) -->
+        <div id="dashboardSection" class="hidden w-full max-w-5xl mx-auto p-6 md:p-8 bg-white rounded-xl shadow-lg">
+            <header class="flex flex-col md:flex-row items-center justify-between mb-6 border-b pb-4">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">HRD Dashboard</h1>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <p id="todayDate" class="text-gray-600"></p>
+                    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Birthday Notification -->
+            <div id="birthdayNotification" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-xl relative mb-6 hidden">
+                <strong class="font-bold">Birthday Notification!</strong>
+                <span id="birthdayList" class="block sm:inline mt-2 sm:mt-0 ml-2"></span>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <nav class="flex flex-wrap gap-2 mb-6">
+                <button id="viewDataBtn" class="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200 active:scale-95">View Employees</button>
+                <button id="addDataBtn" class="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200 active:scale-95">Add Data</button>
+            </nav>
+
+            <!-- Employee List Section -->
+            <section id="employeeListSection" class="space-y-4">
+                <h2 class="text-2xl font-bold text-gray-800">Employee List</h2>
+                <div id="employeeSearch" class="flex items-center space-x-2 mb-4">
+                    <input type="text" id="searchIdInput" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search by Employee ID">
+                    <button id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">Search</button>
+                    <button id="clearSearchBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">Clear</button>
+                </div>
+                <div id="employeeTableContainer" class="overflow-x-auto">
+                    <!-- Table will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Add/Edit Employee Form Section (Hidden by default) -->
+            <section id="addEmployeeSection" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Add Employee Data</h2>
+                <form id="employeeForm" class="space-y-4">
+                    <input type="hidden" id="employeeId">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="employeeNumber" class="block text-gray-700 font-medium mb-1">Employee Number</label>
+                            <input type="text" id="employeeNumber" name="Nomor_Pegawai" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label for="fullName" class="block text-gray-700 font-medium mb-1">Full Name</label>
+                            <input type="text" id="fullName" name="nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div>
+                            <label for="address" class="block text-gray-700 font-medium mb-1">Address</label>
+                            <input type="text" id="address" name="alamat" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="city" class="block text-gray-700 font-medium mb-1">City</label>
+                            <input type="text" id="city" name="kota" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-gray-700 font-medium mb-1">Phone</label>
+                            <input type="text" id="phone" name="telepon" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="gender" class="block text-gray-700 font-medium mb-1">Gender</label>
+                            <input type="text" id="gender" name="Jenis_Kelamin" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="birthplace" class="block text-gray-700 font-medium mb-1">Birth Place</label>
+                            <input type="text" id="birthplace" name="Tempat_Lahir" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="birthdate" class="block text-gray-700 font-medium mb-1">Birth Date</label>
+                            <input type="date" id="birthdate" name="Tanggal_Lahir" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="bloodType" class="block text-gray-700 font-medium mb-1">Blood Type</label>
+                            <select id="bloodType" name="Golongan_Darah" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>A</option>
+                                <option>B</option>
+                                <option>AB</option>
+                                <option>O</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="religion" class="block text-gray-700 font-medium mb-1">Religion</label>
+                            <select id="religion" name="Agama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Islam</option>
+                                <option>Katolik</option>
+                                <option>Kristen Protestan</option>
+                                <option>Budha</option>
+                                <option>Hindu</option>
+                                <option>Konghuchu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="education" class="block text-gray-700 font-medium mb-1">Education</label>
+                            <select id="education" name="Pendidikan" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>SD</option>
+                                <option>SMP</option>
+                                <option>SMA/SMK</option>
+                                <option>D1</option>
+                                <option>D2</option>
+                                <option>D3</option>
+                                <option>D4</option>
+                                <option>S1</option>
+                                <option>S2</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="maritalStatus" class="block text-gray-700 font-medium mb-1">Marital Status</label>
+                            <input type="text" id="maritalStatus" name="Status_Perkawinan" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="ktpNumber" class="block text-gray-700 font-medium mb-1">KTP Number</label>
+                            <input type="text" id="ktpNumber" name="No_KTP" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="npwpNumber" class="block text-gray-700 font-medium mb-1">NPWP Number</label>
+                            <input type="text" id="npwpNumber" name="NPWP" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="joinDate" class="block text-gray-700 font-medium mb-1">Join Date</label>
+                            <input type="date" id="joinDate" name="Tgl_Masuk" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="leaveDate" class="block text-gray-700 font-medium mb-1">Leave Date</label>
+                            <input type="date" id="leaveDate" name="Tgl_Keluar" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="department" class="block text-gray-700 font-medium mb-1">Department</label>
+                            <select id="department" name="DEPARTMENT" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>HRD DEPARTMENT</option>
+                                <option>ENGINEERING DEPARTMENT</option>
+                                <option>HOUSEKEEPING DEPARTMENT</option>
+                                <option>KITCHEN DEPARTMENT</option>
+                                <option>FRONT OFFICE DEPARTMENT</option>
+                                <option>FOOD AND BEVERAGE DEPARTMENT</option>
+                                <option>ACCOUNTING DEPARTMENT</option>
+                                <option>MARKETING DEPARTMENT</option>
+                                <option>SECURITY DEPARTMENT</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="position" class="block text-gray-700 font-medium mb-1">Position</label>
+                            <input type="text" id="position" name="Jabatan" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-2 mt-6">
+                        <button type="button" id="cancelFormBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">
+                            Cancel
+                        </button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl text-center">
+            <h3 class="text-lg font-bold mb-4 text-gray-800">Confirm Deletion</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete this employee?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirmCancelBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">
+                    Cancel
+                </button>
+                <button id="confirmDeleteBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-200 active:scale-95">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const loginSection = document.getElementById('loginSection');
+            const loginForm = document.getElementById('loginForm');
+            const loginMessage = document.getElementById('loginMessage');
+            const dashboardSection = document.getElementById('dashboardSection');
+            const todayDate = document.getElementById('todayDate');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const addDataBtn = document.getElementById('addDataBtn');
+            const viewDataBtn = document.getElementById('viewDataBtn');
+            const employeeListSection = document.getElementById('employeeListSection');
+            const employeeTableContainer = document.getElementById('employeeTableContainer');
+            const addEmployeeSection = document.getElementById('addEmployeeSection');
+            const employeeForm = document.getElementById('employeeForm');
+            const employeeIdInput = document.getElementById('employeeId');
+            const searchIdInput = document.getElementById('searchIdInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            const cancelFormBtn = document.getElementById('cancelFormBtn');
+            const birthdayNotification = document.getElementById('birthdayNotification');
+            const birthdayList = document.getElementById('birthdayList');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+            let employeeToDeleteId = null;
+            const API_BASE_URL = 'src/php/';
+
+            // --- USER INTERFACE CONTROL ---
+            const showDashboard = () => {
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                dashboardSection.classList.add('flex', 'flex-col');
+                todayDate.textContent = new Date().toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                fetchAndRenderEmployees();
+                // We'll add the birthday check after fetching data
+            };
+
+            const showLogin = () => {
+                loginSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+            };
+
+            const showSection = (sectionId) => {
+                employeeListSection.classList.add('hidden');
+                addEmployeeSection.classList.add('hidden');
+
+                if (sectionId === 'list') {
+                    employeeListSection.classList.remove('hidden');
+                } else if (sectionId === 'add') {
+                    addEmployeeSection.classList.remove('hidden');
+                    employeeForm.reset();
+                    employeeIdInput.value = '';
+                }
+            };
+
+            const openConfirmationModal = (id) => {
+                employeeToDeleteId = id;
+                confirmationModal.classList.remove('hidden');
+                confirmationModal.classList.add('flex');
+            };
+
+            const closeConfirmationModal = () => {
+                confirmationModal.classList.add('hidden');
+                confirmationModal.classList.remove('flex');
+                employeeToDeleteId = null;
+            };
+
+            // --- DATA MANAGEMENT (using Fetch API to communicate with PHP) ---
+            const fetchAndRenderEmployees = async () => {
+                try {
+                    const response = await fetch(API_BASE_URL + 'fetch_employees.php');
+                    const employees = await response.json();
+                    renderEmployeeList(employees);
+                    checkBirthdays(employees);
+                } catch (error) {
+                    console.error('Error fetching employees:', error);
+                    employeeTableContainer.innerHTML = '<p class="text-center text-red-500">Failed to load employee data.</p>';
+                }
+            };
+
+            const renderEmployeeList = (data = []) => {
+                if (data.length === 0) {
+                    employeeTableContainer.innerHTML = '<p class="text-center text-gray-500 italic">No employee data found.</p>';
+                    return;
+                }
+
+                let tableHTML = `
+                    <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">No.</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Employee ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Department</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Position</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                `;
+
+                data.forEach((employee, index) => {
+                    tableHTML += `
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${employee.Nomor_Pegawai}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${employee.nama}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${employee.DEPARTMENT}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${employee.Jabatan}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 space-x-2">
+                                <button class="edit-btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg text-xs" data-id="${employee.id}">Edit</button>
+                                <button class="delete-btn bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded-lg text-xs" data-id="${employee.id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+                employeeTableContainer.innerHTML = tableHTML;
+            };
+
+            const checkBirthdays = (employees) => {
+                const today = new Date();
+                const todayMonth = today.getMonth();
+                const todayDay = today.getDate();
+
+                const birthdayEmployees = employees.filter(emp => {
+                    if (emp.Tanggal_Lahir) {
+                        const birthDate = new Date(emp.Tanggal_Lahir);
+                        return birthDate.getMonth() === todayMonth && birthDate.getDate() === todayDay;
+                    }
+                    return false;
+                });
+
+                if (birthdayEmployees.length > 0) {
+                    const names = birthdayEmployees.map(emp => emp.nama).join(', ');
+                    birthdayList.textContent = `Happy birthday to ${names}!`;
+                    birthdayNotification.classList.remove('hidden');
+                } else {
+                    birthdayNotification.classList.add('hidden');
+                }
+            };
+
+            // --- EVENT LISTENERS ---
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = e.target.username.value;
+                const password = e.target.password.value;
+
+                // Simple hardcoded login for demonstration
+                if (username === 'admin' && password === 'admin') {
+                    showDashboard();
+                } else {
+                    loginMessage.textContent = 'Username or password incorrect.';
+                    loginMessage.classList.remove('hidden');
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                showLogin();
+            });
+
+            addDataBtn.addEventListener('click', () => {
+                showSection('add');
+            });
+
+            viewDataBtn.addEventListener('click', () => {
+                fetchAndRenderEmployees();
+                showSection('list');
+            });
+
+            cancelFormBtn.addEventListener('click', () => {
+                showSection('list');
+            });
+
+            // Handle add/edit form submission
+            employeeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const id = employeeIdInput.value;
+                const formData = new FormData(employeeForm);
+                const employeeData = Object.fromEntries(formData.entries());
+
+                const url = id ? API_BASE_URL + 'update_employee.php' : API_BASE_URL + 'add_employee.php';
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(employeeData),
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert(result.message);
+                        fetchAndRenderEmployees();
+                        showSection('list');
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    alert('An error occurred. Please check the console for details.');
+                }
+            });
+
+            // Event delegation for Edit and Delete buttons
+            employeeTableContainer.addEventListener('click', async (e) => {
+                const target = e.target;
+                const id = Number(target.dataset.id);
+
+                if (target.classList.contains('edit-btn')) {
+                    // Fetch all data and find the employee to edit
+                    try {
+                        const response = await fetch(API_BASE_URL + 'fetch_employees.php');
+                        const employees = await response.json();
+                        const employee = employees.find(emp => Number(emp.id) === id);
+                        if (employee) {
+                            for (const key in employee) {
+                                const input = document.getElementById(key);
+                                if (input) {
+                                    input.value = employee[key];
+                                }
+                            }
+                            employeeIdInput.value = employee.id;
+                            showSection('add');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching employee for edit:', error);
+                    }
+                } else if (target.classList.contains('delete-btn')) {
+                    openConfirmationModal(id);
+                }
+            });
+
+            // Search functionality
+            searchBtn.addEventListener('click', async () => {
+                const searchId = searchIdInput.value.trim().toLowerCase();
+                if (searchId) {
+                    try {
+                        const response = await fetch(API_BASE_URL + 'fetch_employees.php');
+                        const employees = await response.json();
+                        const filteredEmployees = employees.filter(emp => String(emp.Nomor_Pegawai).toLowerCase().includes(searchId));
+                        renderEmployeeList(filteredEmployees);
+                    } catch (error) {
+                        console.error('Error searching employees:', error);
+                    }
+                } else {
+                    fetchAndRenderEmployees();
+                }
+            });
+
+            // Clear search functionality
+            clearSearchBtn.addEventListener('click', () => {
+                searchIdInput.value = '';
+                fetchAndRenderEmployees();
+            });
+
+            // Handle delete confirmation
+            confirmDeleteBtn.addEventListener('click', async () => {
+                if (employeeToDeleteId !== null) {
+                    try {
+                        const response = await fetch(API_BASE_URL + 'delete_employee.php', {
+                            method: 'POST', // or 'DELETE', but POST is more widely supported
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ id: employeeToDeleteId }),
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            alert(result.message);
+                            fetchAndRenderEmployees();
+                            closeConfirmationModal();
+                        } else {
+                            alert('Error: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error deleting employee:', error);
+                        alert('An error occurred. Please check the console for details.');
+                    }
+                }
+            });
+            confirmCancelBtn.addEventListener('click', closeConfirmationModal);
+
+
+            // Initial app setup
+            showLogin();
+        });
+    </script>
+</body>
+</html>
