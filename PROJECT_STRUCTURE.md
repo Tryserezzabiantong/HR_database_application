@@ -19,48 +19,25 @@ employee_app/
 │   │   │   └── 📄 bitnami.css      # Custom CSS
 │   │   ├── 📁 js/                   # JavaScript files
 │   │   └── 📁 img/                  # Images
+│   │       ├── 📄 module_table_bottom.png
+│   │       └── 📄 module_table_top.png
 │   ├── 📁 config/                   # Configuration files
-│   │   └── 📄 config.php            # App configuration
+│   │   ├── 📄 config.php            # App configuration
+│   │   └── 📄 config.example.php    # Configuration template
 │   └── 📁 database/                 # Database files
 │       └── 📄 database_structure.sql # Database schema
 ├── 📁 docs/                         # Documentation
 │   ├── 📁 installation/             # Installation guides
-│   │   ├── 📄 INSTALL.md            # Full installation guide
-│   │   └── 📄 QUICKSTART.md         # Quick start guide
 │   ├── 📁 deployment/               # Deployment guides
-│   │   └── 📄 deployment.md         # Deployment instructions
 │   ├── 📁 api/                      # API documentation
-│   ├── 📁 user-guide/               # User guides
-│   ├── 📄 CONTRIBUTING.md           # Contributing guidelines
-│   ├── 📄 CODE_OF_CONDUCT.md        # Code of conduct
-│   ├── 📄 SECURITY.md               # Security policy
-│   ├── 📄 SUPPORT.md                # Support information
-│   ├── 📄 ROADMAP.md                # Development roadmap
-│   ├── 📄 RELEASES.md               # Release notes
-│   ├── 📄 CREDITS.md                # Credits and acknowledgments
-│   └── 📄 MANIFEST.md               # Project manifest
-├── 📁 .github/                      # GitHub configuration
-│   ├── 📁 workflows/                # CI/CD workflows
-│   ├── 📁 ISSUE_TEMPLATE/           # Issue templates
-│   └── 📄 README.md                 # GitHub profile README
-├── 📁 logs/                         # Application logs
+│   └── 📁 user-guide/               # User guides
+├── 📁 img/                          # Additional images
+├── 📁 webalizer/                    # Web analytics data
 ├── 📄 index.php                     # Main entry point
 ├── 📄 .htaccess                     # Apache configuration
-├── 📄 README.md                     # Main project README
-├── 📄 PROJECT_CARD.md               # Project overview card
-├── 📄 SHOWCASE.md                   # Project showcase
-├── 📄 FEATURES.md                   # Features overview
+├── 📄 README.md                     # Project README
 ├── 📄 PROJECT_STRUCTURE.md          # This file
-├── 📄 CHANGELOG.md                  # Change log
-├── 📄 VERSION                       # Version number
-├── 📄 LICENSE                       # MIT License
 ├── 📄 .gitignore                    # Git ignore rules
-├── 📄 .editorconfig                 # Editor configuration
-├── 📄 Makefile                      # Build automation
-├── 📄 package.json                  # Node.js dependencies
-├── 📄 composer.json                 # PHP dependencies
-├── 📄 Dockerfile                    # Docker configuration
-├── 📄 docker-compose.yml            # Docker services
 └── 📄 favicon.ico                   # Site icon
 ```
 
@@ -79,17 +56,16 @@ employee_app/
 - **api/**: API documentation and examples
 - **user-guide/**: User manuals and tutorials
 
-### **📁 .github/** - GitHub Configuration
-- **workflows/**: CI/CD automation
-- **ISSUE_TEMPLATE/**: Issue and PR templates
+### **📁 Other Folders**
+- **img/**: Additional image assets
+- **webalizer/**: Web analytics and statistics data
 
 ## 🚀 **Quick Access URLs:**
 
 - **Main App**: `/` → redirects to `/src/html/index.html`
-- **Test Interface**: `/test` → `/src/html/test_app.html`
-- **API Status**: `/api/status` → `/src/php/status.php`
-- **Documentation**: `/docs` → `/docs/installation/INSTALL.md`
-- **Help**: `/help` → `/docs/SUPPORT.md`
+- **Test Interface**: `/src/html/test_app.html`
+- **API Status**: `/src/php/status.php`
+- **Documentation**: `/docs/installation/`
 
 ## 🔧 **Development Workflow:**
 
@@ -117,3 +93,21 @@ employee_app/
 6. **👥 Team Collaboration**: Clear structure for multiple developers
 7. **📦 Deployment Ready**: Organized for easy deployment
 8. **🔧 Maintenance**: Easy to locate and update files
+
+## 📊 **Current File Count:**
+
+- **PHP Files**: 6 files
+- **HTML Files**: 3 files
+- **CSS Files**: 1 file
+- **Image Files**: 2 files
+- **Documentation**: 1 file
+- **Configuration**: 2 files
+- **Database**: 1 file
+- **Total**: 16+ files
+
+## 🔄 **Git Status:**
+
+- **Repository**: Initialized and connected to GitHub
+- **Remote**: `origin` → `git@github.com:Tryserezzabiantong/HR_database_application.git`
+- **Branches**: `main`, `development`
+- **Status**: Clean working tree, up to date with remote
